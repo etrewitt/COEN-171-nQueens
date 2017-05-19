@@ -9,8 +9,10 @@
 def check(queens : Array(Int32)) : Bool
   # FIXME: obviously there should be an actual check here
   if queens.size == 8
-    return queens == [0, 4, 7, 5, 2, 6, 1, 3] # This is a known 'correct solution'
+    # This is a known 'correct solution'
+    return queens == [0, 4, 7, 5, 2, 6, 1, 3]
   else
+    # I'm too lazy to pull up solutions for n != 8
     return true
   end
 end
@@ -20,8 +22,8 @@ end
 # (contrast with `check`). Both ways are acceptable, but this reduces clarity.
 def board_string(queens)
   board = ""
-  # This could be |queen, i| rather than |_, i|,
-  # but I think the readability is better this way
+  # NOTE: This could be |queen, i| rather than |_, i|, and `queen` rather than
+  # `queens[i]`, but I think the readability is better this way?
   queens.each_with_index { |_, i|
     row = ""
     c = ""
@@ -33,8 +35,7 @@ def board_string(queens)
       else
         c = '⬜' # u2b1c
       end
-      # The above if-elsif-else could be a terse ternary statement,
-      # if we wanted.
+      # NOTE: The above if-elsif-else could be a terser ternary statement?
       # c = queens[i] == j ? '♕' : (i % 2 - j % 2) == 0 ? '⬛' : '⬜'
       row += " " + c
     }
@@ -45,7 +46,7 @@ end
 
 # Given the set of all *solutions* to an n-queens problem, print them all.
 def print_all(solutions : Array(Array(Int32))) : Nil
-  puts(solutions) # NOTE: this is just a test output, and should be removed
+  puts(solutions) # TODO: this is just a test output, and should be removed
   # TODO: print all the things as we want
   puts(board_string(solutions[0]))
 end
@@ -57,7 +58,7 @@ def find_solutions(n_queens : Int) : Array(Array(Int32))
   # each permutation of queens is stored as `board` (for that iteration)
   queens.each_permutation { |board|
     # if it's a valid solution, append the current board-state to solutions
-    solutions << board if check(board) # TODO: finish implementing
+    solutions << board if check(board) # TODO: finish implementing `check`
   }
   return solutions
 end
@@ -68,6 +69,6 @@ start = Time.now
 # If commandline argument, use that as n's value, otherwise n := 8
 n_queens = ARGV.size == 1 ? ARGV[0].to_i : 8 # well. will you look at that, ternary operators exist
 solutions = find_solutions(n_queens)
-print_all(solutions) # TODO: finish implementing
+print_all(solutions) # TODO: finish implementing `print_all`
 since = Time.now - start
 printf("Running time: %.2fms\n", since.total_milliseconds)
