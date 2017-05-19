@@ -16,11 +16,30 @@ def check(queens : Array(Int32)) : Bool
 end
 
 # Generate a visual representation of a chessboard using unicode symbols.
-# The type of *queens* is implicitly assumed, as is the return type
-# (contrast with `check`). Both ways are acceptable, but this adds clarity.
+# NOTE: The type of *queens* is implicitly assumed, as is the return type
+# (contrast with `check`). Both ways are acceptable, but this reduces clarity.
 def board_string(queens)
   board = ""
-  # TODO: construct a unicode board
+  # This could be |queen, i| rather than |_, i|,
+  # but I think the readability is better this way
+  queens.each_with_index { |_, i|
+    row = ""
+    c = ""
+    queens.each_with_index { |_, j|
+      if queens[i] == j
+        c = '♕' # u2655
+      elsif (i % 2 - j % 2) == 0
+        c = '⬛' # u2b1b
+      else
+        c = '⬜' # u2b1c
+      end
+      # The above if-elsif-else could be a terse ternary statement,
+      # if we wanted.
+      # c = queens[i] == j ? '♕' : (i % 2 - j % 2) == 0 ? '⬛' : '⬜'
+      row += " " + c
+    }
+    board += row + "\n"
+  }
   return board
 end
 
@@ -28,6 +47,7 @@ end
 def print_all(solutions : Array(Array(Int32))) : Nil
   puts(solutions) # NOTE: this is just a test output, and should be removed
   # TODO: print all the things as we want
+  puts(board_string(solutions[0]))
 end
 
 # Identify all solutions of an n-queens problem, with *n* as an argument.
