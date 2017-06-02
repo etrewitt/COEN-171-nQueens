@@ -2,33 +2,32 @@
 
 # A chessboard will be represented by an n-element array of ints,
 # with each element representing a position on a chessboard:
-# the index as the column, and the value as the row.
+# the index as the row, and the value as the column.
+# In our implementation, the upper-left square is (0, 0).
 
 # If *queens* represents a valid solution to the n-queens problem, return true.
 # *queens* should be an array of n integers representing a board state.
 def check(queens : Array(Int32)) : Bool
   queens.each_with_index { |queen, i|
     # for each queen, check the diagonals if they conflict with another queen
-    # down-left diagonal
+    # down-left diagonal:
     x = queen + 1
     y = i + 1
     while x < queens.size && y < queens.size
       return false if x == queens[y]
-      x += 1
-      y += 1
+      x += 1; y += 1
     end
-    # down-right diagonal
+    # down-right diagonal:
     x = queen + 1
     y = i - 1
     while x <= queens.size && y >= 0
       return false if x == queens[y]
-      x += 1
-      y -= 1
+      x += 1; y -= 1
     end
   }
   return true
-  # do not have to check for the up-right or up-left diagonal because a queen higher up
-  # will check if there is a queen down the diagonal
+  # Do not have to check for the up-right or up-left diagonal, because
+  # a queen higher up will check if there is a queen down the diagonal.
 end
 
 # Generate a visual representation of a chessboard using unicode symbols.
@@ -37,7 +36,7 @@ end
 def board_string(queens)
   board = ""
   # NOTE: This could be |queen, i| rather than |_, i|, and `queen` rather than
-  # `queens[i]`, but I think the readability is better this way?
+  # `queens[i]`, but we prefer the readability this way.
   queens.each_with_index { |_, i|
     row = ""
     c = ""
@@ -49,7 +48,7 @@ def board_string(queens)
       else
         c = '⬜' # u2b1c
       end
-      # NOTE: The above if-elsif-else could be a terser ternary statement?
+      # NOTE: The above if-elsif-else could be a terser ternary statement:
       # c = queens[i] == j ? '♕' : (i % 2 - j % 2) == 0 ? '⬛' : '⬜'
       row += " " + c
     }
@@ -83,7 +82,6 @@ def find_solutions(n_queens : Int) : Array(Array(Int32))
 end
 
 # No need for a 'main' method.
-# May as well have get_input be commandline args.
 start = Time.now
 # If commandline argument, use that as n's value, otherwise n := 8
 n_queens = ARGV.size == 1 ? ARGV[0].to_i : 8 # well. will you look at that, ternary operators exist
