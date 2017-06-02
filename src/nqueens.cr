@@ -7,14 +7,32 @@
 # If *queens* represents a valid solution to the n-queens problem, return true.
 # *queens* should be an array of n integers representing a board state.
 def check(queens : Array(Int32)) : Bool
-  # FIXME: obviously there should be an actual check here
-  if queens.size == 8
-    # This is a known 'correct solution'
-    return queens == [0, 4, 7, 5, 2, 6, 1, 3]
-  else
-    # I'm too lazy to pull up solutions for n != 8
-    return true
-  end
+  queens.each_with_index { |queen, i|
+    # for each queen, check the diagonals if they conflict with another queen
+    # down-left diagonal
+    x = queen + 1
+    y = i + 1
+    while x < queens.size && y < queens.size
+      if x == queens[y]
+        return false
+      end
+      x += 1
+      y += 1
+    end
+    # down-right diagonal
+    x = queen + 1
+    y = i - 1
+    while x <= queens.size && y >= 0
+      if x == queens[y]
+        return false
+      end
+      x += 1
+      y -= 1
+    end
+  }
+  return true
+  # do not have to check for the up-right or up-left diagonal because a queen higher up
+  # will check if there is a queen down the diagonal
 end
 
 # Generate a visual representation of a chessboard using unicode symbols.
