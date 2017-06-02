@@ -13,9 +13,7 @@ def check(queens : Array(Int32)) : Bool
     x = queen + 1
     y = i + 1
     while x < queens.size && y < queens.size
-      if x == queens[y]
-        return false
-      end
+      return false if x == queens[y]
       x += 1
       y += 1
     end
@@ -23,9 +21,7 @@ def check(queens : Array(Int32)) : Bool
     x = queen + 1
     y = i - 1
     while x <= queens.size && y >= 0
-      if x == queens[y]
-        return false
-      end
+      return false if x == queens[y]
       x += 1
       y -= 1
     end
@@ -81,7 +77,7 @@ def find_solutions(n_queens : Int) : Array(Array(Int32))
   # each permutation of queens is stored as `board` (for that iteration)
   queens.each_permutation { |board|
     # if it's a valid solution, append the current board-state to solutions
-    solutions << board if check(board) # TODO: finish implementing `check`
+    solutions << board if check(board)
   }
   return solutions
 end
@@ -92,6 +88,6 @@ start = Time.now
 # If commandline argument, use that as n's value, otherwise n := 8
 n_queens = ARGV.size == 1 ? ARGV[0].to_i : 8 # well. will you look at that, ternary operators exist
 solutions = find_solutions(n_queens)
-print_all(solutions) # TODO: finish implementing `print_all`
+print_all(solutions)
 since = Time.now - start
 printf("Running time: %.2fms\n", since.total_milliseconds)
