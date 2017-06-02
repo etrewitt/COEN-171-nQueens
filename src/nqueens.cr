@@ -64,8 +64,13 @@ end
 
 # Given the set of all *solutions* to an n-queens problem, print them all.
 def print_all(solutions : Array(Array(Int32))) : Nil
-  puts(solutions) # TODO: this is just a test output, and should be removed
-  # TODO: print all the things as we want
+  printf("Full list of all solutions (%d total):\n", solutions.size)
+  digits = Math.log10(solutions.size).ceil.to_u32 # round up
+  solutions.each_with_index { |board, i|
+    fmtstr = sprintf("[%%0%dd]: %%s\n", digits) # pad appropriately no matter how many digits
+    printf(fmtstr, i, board)
+  }
+  printf("\nExample board layout for %s:\n", solutions[0].to_s)
   puts(board_string(solutions[0]))
 end
 
