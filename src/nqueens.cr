@@ -86,6 +86,10 @@ start = Time.now
 # If commandline argument, use that as n's value, otherwise n := 8
 n_queens = ARGV.size == 1 ? ARGV[0].to_i : 8 # well. will you look at that, ternary operators exist
 solutions = find_solutions(n_queens)
-print_all(solutions)
+if solutions.empty? # check to make sure that solutions exist
+  printf("ERROR: No valid solutions for n = %d.\n", n_queens)
+else
+  print_all(solutions)
+end
 since = Time.now - start
 printf("Running time: %.2fms\n", since.total_milliseconds)
