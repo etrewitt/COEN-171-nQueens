@@ -51,7 +51,7 @@ end
 # All strings in *patterns* should be the same length.
 # Much more time-efficient than `#search_brute_force` for large numbers of patterns.
 # Returns the index and matched pattern if found, else nil.
-def search_rabin_karp(doc : String, patterns : Array(String)) : {Int32, String}
+def search_rabin_karp(doc : String, patterns : Array(String)) : {Int32 | Nil, String}
   maxlen = patterns.max_by { |s| s.size }.size
   hashes = Set(Int32).new(initial_capacity = patterns.size)
 
@@ -102,13 +102,16 @@ end
 
 start = Time.now
 
+n_patterns = ARGV.size == 2 ? ARGV[0].to_i : NPATTERNS
+strlen = ARGV.size == 2 ? ARGV[1].to_i : STRLEN
+
 # Opens and read all the text from text.txt
 doc = File.read("text.txt")
-ps = generate_patterns(NPATTERNS, STRLEN, doc)
+ps = generate_patterns(n_patterns, strlen, doc)
 
-printf "Generated %d patterns of %d chars in %.2fms\n", ps.size, STRLEN, (Time.now - start).total_milliseconds
+printf "Generated %d patterns of %d chars each in %.2fms\n", ps.size, strlen, (Time.now - start).total_milliseconds
 
-puts "Algorithm started"
+puts "Algorithm started\n"
 algstart = Time.now
 
 brute_start = Time.now
