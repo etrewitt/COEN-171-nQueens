@@ -5,7 +5,7 @@
 # the index as the row, and the value as the column.
 # In our implementation, the upper-left square is (0, 0).
 
-# If *queens* represents a valid solution to the n-queens problem, return true.
+# If *queens* represents a valid solution to the n-queens problem, returns true.
 # *queens* should be an array of n integers representing a board state.
 def check(queens : Array(Int32)) : Bool
   queens.each_with_index { |queen, i|
@@ -30,9 +30,9 @@ def check(queens : Array(Int32)) : Bool
   # a queen higher up will check if there is a queen down the diagonal.
 end
 
-# Generate a visual representation of a chessboard using unicode symbols.
+# Generates a visual representation of a chessboard using unicode symbols.
 # NOTE: The type of *queens* is implicitly assumed, as is the return type
-# (contrast with `check`). Both ways are acceptable, but this reduces clarity.
+# (contrast with `#check`). Both ways are acceptable, but this reduces clarity.
 def board_string(queens)
   board = ""
   # NOTE: This could be |queen, i| rather than |_, i|, and `queen` rather than
@@ -56,7 +56,7 @@ def board_string(queens)
   return board
 end
 
-# Given the set of all *solutions* to an n-queens problem, print them all.
+# Prints all *solutions* to a given n-queens problem.
 def print_all(solutions : Array(Array(Int32))) : Nil
   printf("Full list of all solutions (%d total):\n", solutions.size)
   # pad appropriately no matter how many digits
@@ -71,7 +71,7 @@ def print_all(solutions : Array(Array(Int32))) : Nil
   puts(board_string(solutions[0]))
 end
 
-# Identify all solutions of an n-queens problem, with *n* as an argument.
+# Identifies all solutions of an n-queens problem given *n*.
 def find_solutions(n_queens : Int) : Array(Array(Int32))
   solutions = [] of Array(Int32) # empty Array of Int32 Arrays
   queens = (0...n_queens).to_a   # converts a Range of [0, n) to an Array
