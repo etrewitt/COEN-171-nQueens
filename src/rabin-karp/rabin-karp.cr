@@ -37,38 +37,7 @@ class RollingHash
   end
 end
 
-def rabin_karp(doc : String, patterns : Array(String))
-  maxlen = patterns.max_by { |s| s.size }.size
-  print "max: ", maxlen, '\n'
-  hashes = Hash(String, Array(Int32)).new
-  patterns.each { |pattern|
-    hashes[pattern] = [] of Int32
-  }
-  (0...doc.size - maxlen).each { |i|
-    hash = doc[i, maxlen]
-    return i, hash if hashes[hash]? != nil
-  }
-  return hashes
-end
-
-def rabin_karp2(doc : String, patterns : Array(String)) : Hash(Int32, Array(Int32))
-  maxlen = patterns.max_by { |s| s.size }.size
-  hashes = Hash(Int32, Array(Int32)).new
-
-  hasher = RollingHash.new(doc, maxlen)
-
-  patterns.each { |pattern|
-    h = hasher.onetime(pattern)
-    hashes[h] = [] of Int32
-  }
-  (0...doc.size - maxlen).each { |i|
-    h = hasher.next
-    hashes[h] << i if hashes[h]? != nil
-  }
-  return hashes
-end
-
-def rabin_karp3(doc : String, patterns : Array(String))
+def rabin_karp(doc : String, patterns : Array(String)) : {Int32, String}
   maxlen = patterns.max_by { |s| s.size }.size
   hashes = Set(Int32).new(initial_capacity = patterns.size)
 
@@ -81,21 +50,6 @@ def rabin_karp3(doc : String, patterns : Array(String))
   (0...doc.size - maxlen).each { |i|
     h = hasher.next
     return i, doc[i, i + maxlen] if hashes.includes?(h)
-  }
-  return nil, ""
-end
-
-def hash_search(doc : String, patterns : Array(String))
-  maxlen = patterns.max_by { |s| s.size }.size
-  hashes = Set(String).new(initial_capacity = patterns.size)
-
-  patterns.each { |pattern|
-    hashes << pattern
-  }
-
-  (0...doc.size - maxlen).each { |i|
-    h = doc[i, maxlen]
-    return i, h if hashes.includes?(h)
   }
   return nil, ""
 end
@@ -148,7 +102,7 @@ end
 printf("Brute iteration running time: %.2fms\n\n", (Time.now - brute_start).total_milliseconds)
 
 rk_start = Time.now
-i, s = rabin_karp3(doc, ps)
+i, s = rabin_karp(doc, ps)
 if i
   printf "Rabin-Karp search found string %s[...]%s at index %d\n",
     s[0, 10], s[s.size - 10, s.size], i

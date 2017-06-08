@@ -39,7 +39,6 @@ def board_string(queens)
   # `queens[i]`, but we prefer the readability this way.
   queens.each_with_index { |_, i|
     row = ""
-    c = ""
     queens.each_with_index { |_, j|
       if queens[i] == j
         c = '♕' # u2655
@@ -60,9 +59,12 @@ end
 # Given the set of all *solutions* to an n-queens problem, print them all.
 def print_all(solutions : Array(Array(Int32))) : Nil
   printf("Full list of all solutions (%d total):\n", solutions.size)
+  # pad appropriately no matter how many digits
   digits = Math.log10(solutions.size).ceil.to_u32 # round up
   solutions.each_with_index { |board, i|
-    fmtstr = sprintf("[%%0%dd]: %%s\n", digits) # pad appropriately no matter how many digits
+    # e.g., for solutions.size == 200, becomes "[%03d]: %s\n", which can then
+    # be used as an actual format string with 0-padding to 3 digits.
+    fmtstr = sprintf("[%%0%dd]: %%s\n", digits)
     printf(fmtstr, i, board)
   }
   printf("\nExample board layout for %s:\n", solutions[0].to_s)
@@ -84,7 +86,7 @@ end
 # No need for a 'main' method.
 start = Time.now
 # If commandline argument, use that as n's value, otherwise n := 8
-n_queens = ARGV.size == 1 ? ARGV[0].to_i : 8 # well. will you look at that, ternary operators exist
+n_queens = ARGV.size == 1 ? ARGV[0].to_i : 8
 solutions = find_solutions(n_queens)
 if solutions.empty? # check to make sure that solutions exist
   printf("ERROR: No valid solutions for n = %d.\n", n_queens)
