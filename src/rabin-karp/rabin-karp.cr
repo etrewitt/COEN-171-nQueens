@@ -4,7 +4,7 @@ NPATTERNS = 2 ** 10
 STRLEN    = 2 ** 10
 
 # Rolling hash generator for use with algorithms such as Rabin-Karp.
-# Is given the entire text to generate a rolling hash for, and can then
+# Initialized with the entire text to generate a rolling hash for, and can then
 # be called upon to return the next hash in the sequence with `#next`.
 # Hashes are all Int32s.
 class RollingHash
@@ -27,14 +27,14 @@ class RollingHash
     }
   end
 
-  # Advances the substring window by one and return the next hash.
+  # Advances the substring window by one and returns the next hash.
   def next : Int32
     @hash = ((@hash - @text[@pos].ord) * @base + @text[@pos + @size].ord) % @mod
     @pos += 1
     return @hash
   end
 
-  # Returns a hash for a single string from this instance's parameters.
+  # Returns a hash for a single string from this instance's exiting parameters.
   # Doesn't store the string as it will never be advanced.
   def onetime(s : String) : Int32
     hash = 0
