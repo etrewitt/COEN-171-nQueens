@@ -79,9 +79,24 @@ def search_brute_force(doc : String, patterns : Array(String))
   return nil, ""
 end
 
+def hash_search(doc : String, patterns : Array(String))
+  maxlen = patterns.max_by { |s| s.size }.size
+  hashes = Set(String).new(initial_capacity = patterns.size)
+
+  patterns.each { |pattern|
+    hashes << pattern
+  }
+
+  (0...doc.size - maxlen).each { |i|
+    h = doc[i, maxlen]
+    return i, h if hashes.includes?(h)
+  }
+  return nil, ""
+end
+
 # Returns an Array with *n_patterns* *strlen*-character Strings,
 # of which one is a substring of *doc* and the rest are random.
-def generate_patterns(n_patterns : Int32, strlen : Int32, doc : String) : Array(String)
+def generate_patterns(n_patterns, strlen, doc : String) : Array(String)
   ps = [] of String
 
   chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
@@ -102,6 +117,7 @@ end
 
 start = Time.now
 
+# Command line args
 n_patterns = ARGV.size == 2 ? ARGV[0].to_i : NPATTERNS
 strlen = ARGV.size == 2 ? ARGV[1].to_i : STRLEN
 
@@ -133,6 +149,16 @@ else
   puts "RK: No pattern found"
 end
 printf("Rabin-Karp running time: %.2fms\n", (Time.now - rk_start).total_milliseconds)
+
+# rk_start = Time.now
+# i, s = hash_search(doc, ps)
+# if i
+#   printf "Naive hash search found string %s[...]%s at index %d\n",
+#     s[0, 10], s[s.size - 10, s.size], i
+# else
+#   puts "RK: No pattern found"
+# end
+# printf("Naive hash running time: %.2fms\n", (Time.now - rk_start).total_milliseconds)
 
 since = Time.now - start
 printf("Total elapsed time: %.2fms\n", since.total_milliseconds)
