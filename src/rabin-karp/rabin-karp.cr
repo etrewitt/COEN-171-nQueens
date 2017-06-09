@@ -138,7 +138,7 @@ if i
 else
   puts "Brute: No pattern found"
 end
-printf("Brute iteration running time: %.2fms\n\n", (Time.now - brute_start).total_milliseconds)
+printf "Brute iteration running time: %.2fms\n\n", (Time.now - brute_start).total_milliseconds
 
 rk_start = Time.now
 i, s = search_rabin_karp(doc, ps)
@@ -148,8 +148,9 @@ if i
 else
   puts "RK: No pattern found"
 end
-printf("Rabin-Karp running time: %.2fms\n", (Time.now - rk_start).total_milliseconds)
+printf "Rabin-Karp running time: %.2fms\n", (Time.now - rk_start).total_milliseconds
 
+# This is too slow to use for a demonstration. String comparison takes a *very* long time.
 # rk_start = Time.now
 # i, s = hash_search(doc, ps)
 # if i
@@ -161,4 +162,4 @@ printf("Rabin-Karp running time: %.2fms\n", (Time.now - rk_start).total_millisec
 # printf("Naive hash running time: %.2fms\n", (Time.now - rk_start).total_milliseconds)
 
 since = Time.now - start
-printf("Total elapsed time: %.2fms\n", since.total_milliseconds)
+printf "Total elapsed time: %.2fms\n", since.total_milliseconds
